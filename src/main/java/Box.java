@@ -10,6 +10,7 @@ public class Box<T extends Fruit> {
     arr = new ArrayList<>();
   }
 
+
   public float getWeight() {
     if (arr.size() == 0) {
       return 0.0f;
