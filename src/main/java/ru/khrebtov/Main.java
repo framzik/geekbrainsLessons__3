@@ -1,42 +1,40 @@
 package ru.khrebtov;
 
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.Arrays;
 
 public class Main {
 
-    public static final int CARS_COUNT = 4;
-
-
-    public static void main(String[] args) {
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-        CyclicBarrier cb = new CyclicBarrier(CARS_COUNT + 1);
-        ArrayBlockingQueue<Car> blockingQueue = new ArrayBlockingQueue<>(CARS_COUNT);
-
-        Race race = new Race(new Road(60), new Tunnel(), new Road(40));
-        Car[] cars = new Car[CARS_COUNT];
-
-        for (int i = 0; i < cars.length; i++) {
-            cars[i] = new Car(race, 20 + (int) (Math.random() * 10), cb, blockingQueue);
+    public int[] afterFor(int[] arr) {
+        int[] newArr;
+        int indexLastFor = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 4 & indexLastFor < i) {
+                indexLastFor = i;
+            }
         }
-
-        for (int i = 0; i < cars.length; i++) {
-            new Thread(cars[i]).start();
+        if (indexLastFor == -1) {
+            throw new RuntimeException("В массиве нет 4");
         }
+        newArr = Arrays.copyOfRange(arr, indexLastFor + 1, arr.length);
+        return newArr;
+    }
 
-        try {
-            cb.await();
-            System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-            cb.await();
-            System.out.println(blockingQueue.take().getName() + " WIN");
-            cb.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
+
+    public boolean isHaveSomeNumbers(int[] arr) {
+        int countOne = 0;
+        int countFor = 0;
+
+        for (int j : arr) {
+            if (j != 4 && j != 1) {
+                return false;
+            }
+            if (j == 1) {
+                countOne++;
+            }
+            if (j == 4) {
+                countFor++;
+            }
         }
-
-
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
+        return !(countOne == 0 || countFor == 0);
     }
 }
