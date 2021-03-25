@@ -8,5 +8,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AfterSuite {
-    int priority() default Integer.MAX_VALUE;
 }
